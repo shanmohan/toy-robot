@@ -14,6 +14,7 @@ namespace ToyRobot
 
         #region Private Properties
         private const string INVALID_COMMAND = "Invalid Command.";
+        private const string UNKNOWN_ERROR = "Unknown Error.";
         private IRobot robot { get; set; }
 
         #endregion
@@ -39,51 +40,58 @@ namespace ToyRobot
             string command = "";
             bool commandResult = false;
 
-            if (ValidateCommand(commandString))
-            {
-                command = GetCommand(commandString);
-            }
-            else
-            {
-                return robot.StatusMessage;
-            }
+            try {
 
-            switch ((CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), command, true))
-            {
-                case CommandTypeEnum.PLACE:
-                    string arguments = commandString.Substring(commandString.IndexOf(" "));
+                if (ValidateCommand(commandString))
+                {
+                    command = GetCommand(commandString);
+                }
+                else
+                {
+                    return robot.StatusMessage;
+                }
 
-                    string[] argArray = arguments.Split(',');
+                switch ((CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), command, true))
+                {
+                    case CommandTypeEnum.PLACE:
+                        string arguments = commandString.Substring(commandString.IndexOf(" "));
 
-                    if (argArray.Length < 3) return INVALID_COMMAND;
+                        string[] argArray = arguments.Split(',');
 
-                    int posX = Convert.ToInt16(argArray[0]);
-                    int posY = Convert.ToInt16(argArray[1]);
-                    string direction = argArray[2];
+                        if (argArray.Length < 3) return INVALID_COMMAND;
 
-                    if (!Enum.IsDefined(typeof(DirectionTypeEnum), direction))
-                    {
+                        int posX = Convert.ToInt16(argArray[0]);
+                        int posY = Convert.ToInt16(argArray[1]);
+                        string direction = argArray[2];
+
+                        if (!Enum.IsDefined(typeof(DirectionTypeEnum), direction))
+                        {
+                            return INVALID_COMMAND;
+                        }
+
+                        commandResult = robot.Place(posX, posY, (DirectionTypeEnum)Enum.Parse(typeof(DirectionTypeEnum), direction, true));
+                        return PrintOutput(commandResult);
+                    case CommandTypeEnum.MOVE:
+                        commandResult = robot.Move();
+                        return PrintOutput(commandResult);
+                    case CommandTypeEnum.LEFT:
+                        commandResult = robot.Left();
+                        return PrintOutput(commandResult);
+                    case CommandTypeEnum.RIGHT:
+                        commandResult = robot.Right();
+                        return PrintOutput(commandResult);
+                    case CommandTypeEnum.REPORT:
+                        return robot.Report();
+                    default:
                         return INVALID_COMMAND;
-                    }
 
-                    commandResult = robot.Place(posX, posY, (DirectionTypeEnum)Enum.Parse(typeof(DirectionTypeEnum), direction, true));
-                    return PrintOutput(commandResult);
-                case CommandTypeEnum.MOVE:
-                    commandResult = robot.Move();
-                    return PrintOutput(commandResult);
-                case CommandTypeEnum.LEFT:
-                    commandResult = robot.Left();
-                    return PrintOutput(commandResult);
-                case CommandTypeEnum.RIGHT:
-                    commandResult =  robot.Right();
-                    return PrintOutput(commandResult);
-                case CommandTypeEnum.REPORT:
-                    return robot.Report();
-                default:
-                    return INVALID_COMMAND;
-
+                }
             }
-
+            catch (Exception ex)
+            {
+                //TODO : Exception to be logged
+                return UNKNOWN_ERROR;
+            }
         }
 
         #endregion
@@ -96,13 +104,20 @@ namespace ToyRobot
         /// <returns></returns>
         private string PrintOutput(bool commandResult)
         {
-            if (commandResult)
-            {
-                return "";
+            try {
+                if (commandResult)
+                {
+                    return "";
+                }
+                else
+                {
+                    return robot.StatusMessage;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return robot.StatusMessage;
+                //TODO : Exception to be logged
+                return UNKNOWN_ERROR;
             }
         }
         /// <summary>
@@ -112,21 +127,28 @@ namespace ToyRobot
         /// <returns></returns>
         private bool ValidFirstCommand(string commandString)
         {
-            if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
-            {
-                if (robot.CurrentDirection == 0 && (CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
+            try {
+                if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
+                {
+                    if (robot.CurrentDirection == 0 && (CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
+                    {
+                        robot.StatusMessage = INVALID_COMMAND;
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
                 {
                     robot.StatusMessage = INVALID_COMMAND;
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
-            }
-            else
+            }catch (Exception ex)
             {
-                robot.StatusMessage = INVALID_COMMAND;
+                //TODO : Exception to be logged
+                robot.StatusMessage = UNKNOWN_ERROR;
                 return false;
             }
         }
@@ -139,13 +161,19 @@ namespace ToyRobot
         private string GetCommand(string commandString)
         {
             string command = "";
-            if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
+            try {
+                if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
+                {
+                    command = commandString;
+                }
+                else
+                {
+                    command = commandString.Substring(0, commandString.IndexOf(" "));
+                }
+            }catch (Exception ex)
             {
-                command = commandString;
-            }
-            else
-            {
-                command = commandString.Substring(0, commandString.IndexOf(" "));
+                //TODO : Exception to be logged
+                return "";
             }
 
             return command;
@@ -157,15 +185,21 @@ namespace ToyRobot
         /// <returns>True/False</returns>
         private bool ValidateCommand(string commandString)
         {
+            try {
 
-
-            if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
-            {
-                if ((CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
+                if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
                 {
-                    if (ValidFirstCommand(commandString))
+                    if ((CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
                     {
-                        return true;
+                        if (ValidFirstCommand(commandString))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            robot.StatusMessage = INVALID_COMMAND;
+                            return false;
+                        }
                     }
                     else
                     {
@@ -175,31 +209,31 @@ namespace ToyRobot
                 }
                 else
                 {
-                    robot.StatusMessage = INVALID_COMMAND;
-                    return false;
-                }
-            }
-            else
-            {
-                if (commandString.IndexOf(" ") == -1)
-                {
-                    robot.StatusMessage = INVALID_COMMAND;
-                    return false;
-                }
-                else
-                {
-                    string str = commandString.Substring(0, commandString.IndexOf(" "));
-                    if (ValidFirstCommand(str))
-                    {
-                        return true;
-                    }
-                    else
+                    if (commandString.IndexOf(" ") == -1)
                     {
                         robot.StatusMessage = INVALID_COMMAND;
                         return false;
                     }
+                    else
+                    {
+                        string str = commandString.Substring(0, commandString.IndexOf(" "));
+                        if (ValidFirstCommand(str))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            robot.StatusMessage = INVALID_COMMAND;
+                            return false;
+                        }
 
+                    }
                 }
+            }catch (Exception ex)
+            {
+                //TODO : Exception to be logged
+                robot.StatusMessage = UNKNOWN_ERROR;
+                return false;
             }
         }
 

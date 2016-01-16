@@ -17,6 +17,7 @@ namespace ToyRobot.Service
         private const string OPERATION_SUCCESSFULL = "Operation Successfull";
         private const string INVALID_POSITION = "Invalid Position.";
         private const string INVALID_MOVE = "Invalid Move.";
+        private const string UNKNOWN_ERROR = "Unknown Error.";
         #endregion
 
         #region Public Methods
@@ -29,15 +30,25 @@ namespace ToyRobot.Service
         /// <returns></returns>
         public bool Place(int positionX, int positionY, DirectionTypeEnum defaultDirection)
         {
-            if (!IsPlacementValid(positionX, positionY, defaultDirection))
+            try
             {
+
+                if (!IsPlacementValid(positionX, positionY, defaultDirection))
+                {
+                    return false;
+                }
+
+                PositionX = positionX;
+                PositionY = positionY;
+                CurrentDirection = defaultDirection;
+                StatusMessage = OPERATION_SUCCESSFULL;
+            }
+            catch (Exception ex)
+            {
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
                 return false;
             }
-
-            PositionX = positionX;
-            PositionY = positionY;
-            CurrentDirection = defaultDirection;
-            StatusMessage = OPERATION_SUCCESSFULL;
             return true;
 
         }
@@ -49,7 +60,15 @@ namespace ToyRobot.Service
         /// <returns>Changes the direection to the left side and returns true</returns>
         public bool Left()
         {
-            CurrentDirection = (Convert.ToInt16(CurrentDirection) > 1) ? CurrentDirection - 1 : CurrentDirection + 3;
+            try {
+                CurrentDirection = (Convert.ToInt16(CurrentDirection) > 1) ? CurrentDirection - 1 : CurrentDirection + 3;
+            }
+            catch (Exception ex)
+            {
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
+                return false;
+            }
             return true;
         }
 
@@ -59,29 +78,37 @@ namespace ToyRobot.Service
         /// <returns>If move allowed, moves the postion of the robot by single scale and returns True, Else returns false</returns>
         public bool Move()
         {
-            if (IsMoveValid(CurrentDirection))
-            {
-
-                switch (CurrentDirection)
+            try {
+                if (IsMoveValid(CurrentDirection))
                 {
-                    case DirectionTypeEnum.NORTH:
-                        PositionY++;
-                        break;
-                    case DirectionTypeEnum.EAST:
-                        PositionX++;
-                        break;
-                    case DirectionTypeEnum.SOUTH:
-                        PositionY--;
-                        break;
-                    case DirectionTypeEnum.WEST:
-                        PositionX--;
-                        break;
+
+                    switch (CurrentDirection)
+                    {
+                        case DirectionTypeEnum.NORTH:
+                            PositionY++;
+                            break;
+                        case DirectionTypeEnum.EAST:
+                            PositionX++;
+                            break;
+                        case DirectionTypeEnum.SOUTH:
+                            PositionY--;
+                            break;
+                        case DirectionTypeEnum.WEST:
+                            PositionX--;
+                            break;
+                    }
+                    return true;
                 }
-                return true;
+                else
+                {
+                    StatusMessage = INVALID_MOVE;
+                    return false;
+                }
             }
-            else
+            catch (Exception)
             {
-                StatusMessage = INVALID_MOVE;
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
                 return false;
             }
         }
@@ -92,7 +119,14 @@ namespace ToyRobot.Service
         /// <returns>Current Position</returns>
         public string Report()
         {
-            return "Output: " + PositionX + "," + PositionY + "," + CurrentDirection.ToString();
+            try {
+                return "Output: " + PositionX + "," + PositionY + "," + CurrentDirection.ToString();
+            }
+            catch (Exception ex)
+            {
+                //TODO : Exception to be logged
+                return UNKNOWN_ERROR;
+            }
         }
 
         /// <summary>
@@ -101,7 +135,14 @@ namespace ToyRobot.Service
         /// <returns>Changes the direection to the right side and returns true</returns>
         public bool Right()
         {
-            CurrentDirection = (Convert.ToInt16(CurrentDirection) < 4) ? CurrentDirection + 1 : CurrentDirection - 3;
+            try {
+                CurrentDirection = (Convert.ToInt16(CurrentDirection) < 4) ? CurrentDirection + 1 : CurrentDirection - 3;
+            }catch(Exception ex)
+            {
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
+                return false;
+            }
             return true;
         }
 
@@ -118,9 +159,16 @@ namespace ToyRobot.Service
         /// <returns></returns>
         private bool IsPlacementValid(int positionX, int positionY, DirectionTypeEnum defaultDirection)
         {
-            if (positionX < 0 || positionY < 0 || positionX > MaxX || positionY > MaxY)
+            try {
+                if (positionX < 0 || positionY < 0 || positionX > MaxX || positionY > MaxY)
+                {
+                    StatusMessage = INVALID_POSITION;
+                    return false;
+                }
+            }catch (Exception ex)
             {
-                StatusMessage = INVALID_POSITION;
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
                 return false;
             }
 
@@ -135,20 +183,31 @@ namespace ToyRobot.Service
         /// <returns></returns>
         private bool IsMoveValid(DirectionTypeEnum movingDirection)
         {
-            switch (movingDirection)
+            try
             {
-                case DirectionTypeEnum.NORTH:
-                    if (PositionY == 5) return false;
-                    break;
-                case DirectionTypeEnum.EAST:
-                    if (PositionX == 5) return false;
-                    break;
-                case DirectionTypeEnum.SOUTH:
-                    if (PositionY == 0) return false;
-                    break;
-                case DirectionTypeEnum.WEST:
-                    if (PositionX == 0) return false;
-                    break;
+
+
+                switch (movingDirection)
+                {
+                    case DirectionTypeEnum.NORTH:
+                        if (PositionY == 5) return false;
+                        break;
+                    case DirectionTypeEnum.EAST:
+                        if (PositionX == 5) return false;
+                        break;
+                    case DirectionTypeEnum.SOUTH:
+                        if (PositionY == 0) return false;
+                        break;
+                    case DirectionTypeEnum.WEST:
+                        if (PositionX == 0) return false;
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                //TODO : Exception to be logged
+                StatusMessage = UNKNOWN_ERROR;
+                return false;
             }
 
             return true;
