@@ -1,8 +1,8 @@
-# Simulating Toy Robot - implementation using C#
+# Simulating Toy Robot - implementation using C Sharp
 
 ## Instructions on how to run the code
 
-1. git clone https://github.com/shanmohan/toy-robot.git
+1. `git clone https://github.com/shanmohan/toy-robot.git`
 2. Open the ToyRobot.sln file
 3. Set ToyRobot.Console project as "Set as StartUp Project"
 4. Hit Start
