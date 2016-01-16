@@ -24,6 +24,10 @@ namespace ToyRobot.Tests
         [TestCase("LEFT", "Output: 4,5,EAST")]
         [TestCase("MOVE", "Invalid Move.")]
         [TestCase("REPORT", "Output: 4,5,EAST")]
+        [TestCase("PLACE -1,0,NORTH", "Invalid Position.")]
+        [TestCase("PLACE 0,-1,NORTH", "Invalid Position.")]
+        [TestCase("PLACE 6, 5,NORTH", "Invalid Position.")]
+        [TestCase("place 5, 5,NORTH", "Output: 5,5,NORTH")]
         public void ProcessTest_ShouldReturnCorrectOutput_WhenCommandIsGiven(string command, string report)
         {           
 

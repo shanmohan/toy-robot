@@ -15,7 +15,7 @@ namespace ToyRobot.Service
         private const int MaxX = 5;
         private const int MaxY = 5;
         private const string OPERATION_SUCCESSFULL = "Operation Successfull";
-        private const string INVALID_POSITION = "Invalid postion.";
+        private const string INVALID_POSITION = "Invalid Position.";
         private const string INVALID_MOVE = "Invalid Move.";
         #endregion
 

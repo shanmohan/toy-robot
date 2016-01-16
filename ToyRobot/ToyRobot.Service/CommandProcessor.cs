@@ -34,8 +34,9 @@ namespace ToyRobot
         /// </summary>
         /// <param name="commandString">Command string provided by the console/consumer</param>
         /// <returns></returns>
-        public string Process(string commandString)
+        public string Process(string commandValue)
         {
+            string commandString = commandValue.ToUpper();
             string command = "";
             bool commandResult = false;
 
