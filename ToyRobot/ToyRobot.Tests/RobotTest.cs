@@ -1,61 +1,97 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ToyRobot;
 using ToyRobot.Service;
+using NUnit.Framework;
 
 namespace ToyRobot.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class RobotTest
     {
 
         private IRobot robot;
 
-        [TestInitialize]
+        [OneTimeSetUp]
         public void Setup()
         {
             robot = new Robot();
         }
 
-        [TestMethod()]
-        public void PlaceTest_ShouldReturnTrue_WhenValidArgumentsArepassed()
+        [TestCase(0, 4 ,DirectionTypeEnum.NORTH)]
+        [TestCase(1, 0, DirectionTypeEnum.EAST)]
+        [TestCase(2, 5, DirectionTypeEnum.SOUTH)]
+        [TestCase(3, 0, DirectionTypeEnum.WEST)]
+        public void PlaceTest_ShouldReturnTrue_WhenValidArgumentsArepassed(int postionX, int positionY, DirectionTypeEnum directionType)
         {
             //Act
-            var result = robot.Place(0,0,DirectionTypeEnum.NORTH);
+            var result = robot.Place(postionX, positionY, directionType);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.That(result, Is.True);
         }
 
-        [TestMethod()]
-        public void PlaceTest_ShouldReturnFalse_WhenValidArgumentsArepassed()
+        [TestCase(-1, 4, DirectionTypeEnum.NORTH)]
+        [TestCase(6, 0, DirectionTypeEnum.EAST)]
+        [TestCase(2, 8, DirectionTypeEnum.SOUTH)]
+        [TestCase(3, -1, DirectionTypeEnum.WEST)]
+        public void PlaceTest_ShouldReturnFalse_WhenValidArgumentsArepassed(int postionX, int positionY, DirectionTypeEnum directionType)
         {
             //Act
-            var result = robot.Place(6, 0, DirectionTypeEnum.NORTH);
+            var result = robot.Place(postionX, positionY, directionType);
 
             //Assert
-            Assert.AreEqual(false, result);
+            Assert.That(result, Is.False);
         }
 
-        [TestMethod()]
-        public void MoveTest()
+        [TestCase(0, 4, DirectionTypeEnum.NORTH)]
+        [TestCase(1, 0, DirectionTypeEnum.EAST)]
+        [TestCase(2, 5, DirectionTypeEnum.SOUTH)]
+        [TestCase(5, 5, DirectionTypeEnum.WEST)]
+        public void MoveTest_ShouldReturnTrueWhenInValidPositionToMove(int postionX, int positionY, DirectionTypeEnum directionType)
         {
-            Assert.Fail();
+            //Arrange
+            robot.PositionX = postionX;
+            robot.PositionY = positionY;
+            robot.CurrentDirection = directionType;
+
+            //Act
+            var result = robot.Move();
+
+            //Assert
+            Assert.That(result, Is.True);
         }
 
-        [TestMethod()]
+        [TestCase(0, 0, DirectionTypeEnum.SOUTH)]
+        [TestCase(0, 5, DirectionTypeEnum.EAST)]
+        [TestCase(5, 0, DirectionTypeEnum.WEST)]
+        [TestCase(5, 5, DirectionTypeEnum.NORTH)]
+        public void MoveTest_ShouldReturnFalseWhenInValidPositionToMove(int postionX, int positionY, DirectionTypeEnum directionType)
+        {
+            //Arrange
+            robot.PositionX = postionX;
+            robot.PositionY = positionY;
+            robot.CurrentDirection = directionType;
+
+            //Act
+            var result = robot.Move();
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
         public void RightTest()
         {
             Assert.Fail();
         }
 
-        [TestMethod()]
+        [Test]
         public void LeftTest()
         {
             Assert.Fail();
         }
 
-        [TestMethod()]
+        [Test]
         public void ReportTest()
         {
             Assert.Fail();

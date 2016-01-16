@@ -15,11 +15,12 @@ namespace ToyRobot.Service
         public string StatusMessage { get; set; }
         #endregion
 
-        #region "Private Properties"
+        #region Private Properties
         private const int MaxX = 5;
         private const int MaxY = 5;
         private const string OPERATION_SUCCESSFULL = "Operation Successfull";
         private const string INVALID_POSITION = "Invalid postion.";
+        private const string INVALID_MOVE = "Invalid Move.";
         #endregion
 
         #region Public Methods
@@ -37,6 +38,52 @@ namespace ToyRobot.Service
             return true;
 
         }
+
+
+        public bool Left()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Move()
+        {
+            if (IsMoveValid(CurrentDirection))
+            {
+
+                switch (CurrentDirection)
+                {
+                    case DirectionTypeEnum.NORTH:
+                        PositionX++;
+                        break;
+                    case DirectionTypeEnum.EAST:
+                        PositionY++;
+                        break;
+                    case DirectionTypeEnum.SOUTH:
+                        PositionX--;
+                        break;
+                    case DirectionTypeEnum.WEST:
+                        PositionY--;
+                        break;
+                }
+                return true;
+            }
+            else
+            {
+                StatusMessage = INVALID_MOVE;
+                return false;
+            }
+        }
+
+        public string Report()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Right()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Private Methods
@@ -52,25 +99,28 @@ namespace ToyRobot.Service
             return true;
         }
 
-        public bool Left()
+
+        private bool IsMoveValid(DirectionTypeEnum movingDirection)
         {
-            throw new NotImplementedException();
+            switch (movingDirection)
+            {
+                case DirectionTypeEnum.NORTH:
+                    if (PositionX == 5) return false;
+                    break;
+                case DirectionTypeEnum.EAST:
+                    if (PositionY == 5) return false;
+                    break;
+                case DirectionTypeEnum.SOUTH:
+                    if (PositionX == 0) return false;
+                    break;
+                case DirectionTypeEnum.WEST:
+                    if (PositionY == 0) return false;
+                    break;
+            }
+
+            return true;
         }
 
-        public bool Move()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Report()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Right()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
     }
