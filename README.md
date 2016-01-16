@@ -1,4 +1,4 @@
-# Simulating Toy Robot - implementation using C Sharp
+# Toy Robot Simulator - Using C Sharp
 
 ## Instructions on how to run the code
 
@@ -13,7 +13,8 @@
 
 ## Remarks
 
-1. Test data has been provided as part of respective test cases similar to below sample
+1. High-level design sketch can be found under /Desings
+2. Test data has been provided as part of respective test cases similar to below sample
 
 
         [TestCase("PLACE 0,0,NORTH", "")]
