@@ -79,16 +79,36 @@ namespace ToyRobot.Tests
             Assert.That(result, Is.False);
         }
 
-        [Test]
-        public void RightTest()
+        [TestCase(DirectionTypeEnum.SOUTH, DirectionTypeEnum.WEST)]
+        [TestCase(DirectionTypeEnum.EAST, DirectionTypeEnum.SOUTH)]
+        [TestCase(DirectionTypeEnum.WEST, DirectionTypeEnum.NORTH)]
+        [TestCase(DirectionTypeEnum.NORTH, DirectionTypeEnum.EAST)]
+        public void RightTest(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
         {
-            Assert.Fail();
+            //Arrange
+            robot.CurrentDirection = currentDirection;
+
+            //Act
+            var result = robot.Right();
+
+            //Assert
+            Assert.That(robot.CurrentDirection, Is.EqualTo(newDirection));
         }
 
-        [Test]
-        public void LeftTest()
+        [TestCase(DirectionTypeEnum.SOUTH, DirectionTypeEnum.WEST)]
+        [TestCase(DirectionTypeEnum.EAST, DirectionTypeEnum.SOUTH)]
+        [TestCase(DirectionTypeEnum.WEST, DirectionTypeEnum.NORTH)]
+        [TestCase(DirectionTypeEnum.NORTH, DirectionTypeEnum.EAST)]
+        public void LeftTest(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
         {
-            Assert.Fail();
+            //Arrange
+            robot.CurrentDirection = currentDirection;
+
+            //Act
+            var result = robot.Right();
+
+            //Assert
+            Assert.That(robot.CurrentDirection, Is.EqualTo(newDirection));
         }
 
         [Test]

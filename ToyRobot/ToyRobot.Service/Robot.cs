@@ -42,7 +42,8 @@ namespace ToyRobot.Service
 
         public bool Left()
         {
-            throw new NotImplementedException();
+            CurrentDirection = (Convert.ToInt16(CurrentDirection) > 1) ? CurrentDirection - 1 : CurrentDirection + 3;
+            return true;
         }
 
         public bool Move()
@@ -81,7 +82,8 @@ namespace ToyRobot.Service
 
         public bool Right()
         {
-            throw new NotImplementedException();
+            CurrentDirection = (Convert.ToInt16(CurrentDirection) < 4) ? CurrentDirection + 1 : CurrentDirection - 3;
+            return true;
         }
 
         #endregion
