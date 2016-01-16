@@ -83,7 +83,7 @@ namespace ToyRobot.Tests
         [TestCase(DirectionTypeEnum.EAST, DirectionTypeEnum.SOUTH)]
         [TestCase(DirectionTypeEnum.WEST, DirectionTypeEnum.NORTH)]
         [TestCase(DirectionTypeEnum.NORTH, DirectionTypeEnum.EAST)]
-        public void RightTest(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
+        public void RightTest_ShouldReturnChangedDirection_WhenCorrectComamndIsGiven(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
         {
             //Arrange
             robot.CurrentDirection = currentDirection;
@@ -99,7 +99,7 @@ namespace ToyRobot.Tests
         [TestCase(DirectionTypeEnum.EAST, DirectionTypeEnum.SOUTH)]
         [TestCase(DirectionTypeEnum.WEST, DirectionTypeEnum.NORTH)]
         [TestCase(DirectionTypeEnum.NORTH, DirectionTypeEnum.EAST)]
-        public void LeftTest(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
+        public void LeftTest_ShouldReturnChangedDirection_WhenCorrectComamndIsGiven(DirectionTypeEnum currentDirection, DirectionTypeEnum newDirection)
         {
             //Arrange
             robot.CurrentDirection = currentDirection;
@@ -115,7 +115,7 @@ namespace ToyRobot.Tests
         [TestCase(0, 5, DirectionTypeEnum.EAST, "Output: 0,5,EAST")]
         [TestCase(5, 0, DirectionTypeEnum.WEST, "Output: 5,0,WEST")]
         [TestCase(5, 5, DirectionTypeEnum.NORTH, "Output: 5,5,NORTH")]
-        public void ReportTest(int postionX, int positionY, DirectionTypeEnum directionType, string output)
+        public void ReportTest_ShouldPrintOutput_WhenCorrectCommandIsGiven(int postionX, int positionY, DirectionTypeEnum directionType, string output)
         {
             //Arrange
             robot.PositionX = postionX;
