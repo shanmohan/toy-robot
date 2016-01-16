@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ToyRobot;
+using ToyRobot.Service;
 
 namespace ToyRobot.Tests
 {
@@ -13,13 +14,27 @@ namespace ToyRobot.Tests
         [TestInitialize]
         public void Setup()
         {
-            //robot = new Robot();
+            robot = new Robot();
         }
 
         [TestMethod()]
-        public void PlaceTest()
+        public void PlaceTest_ShouldReturnTrue_WhenValidArgumentsArepassed()
         {
-            Assert.Fail();
+            //Act
+            var result = robot.Place(0,0,DirectionTypeEnum.NORTH);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod()]
+        public void PlaceTest_ShouldReturnFalse_WhenValidArgumentsArepassed()
+        {
+            //Act
+            var result = robot.Place(6, 0, DirectionTypeEnum.NORTH);
+
+            //Assert
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod()]
