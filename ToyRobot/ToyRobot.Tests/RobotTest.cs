@@ -47,12 +47,12 @@ namespace ToyRobot.Tests
         [TestCase(1, 0, DirectionTypeEnum.EAST)]
         [TestCase(2, 5, DirectionTypeEnum.SOUTH)]
         [TestCase(5, 5, DirectionTypeEnum.WEST)]
-        public void MoveTest_ShouldReturnTrueWhenInValidPositionToMove(int postionX, int positionY, DirectionTypeEnum directionType)
+        public void MoveTest_ShouldReturnTrueWhenPositionIsvalid(int postionX, int positionY, DirectionTypeEnum cuurrentDirection)
         {
             //Arrange
             robot.PositionX = postionX;
             robot.PositionY = positionY;
-            robot.CurrentDirection = directionType;
+            robot.CurrentDirection = cuurrentDirection;
 
             //Act
             var result = robot.Move();
@@ -62,15 +62,15 @@ namespace ToyRobot.Tests
         }
 
         [TestCase(0, 0, DirectionTypeEnum.SOUTH)]
-        [TestCase(0, 5, DirectionTypeEnum.EAST)]
-        [TestCase(5, 0, DirectionTypeEnum.WEST)]
+        [TestCase(0, 0, DirectionTypeEnum.WEST)]
         [TestCase(5, 5, DirectionTypeEnum.NORTH)]
-        public void MoveTest_ShouldReturnFalseWhenInValidPositionToMove(int postionX, int positionY, DirectionTypeEnum directionType)
+        [TestCase(5, 5, DirectionTypeEnum.EAST)]
+        public void MoveTest_ShouldReturnFalseWhenPositionToInvalid(int postionX, int positionY, DirectionTypeEnum cuurrentDirection)
         {
             //Arrange
             robot.PositionX = postionX;
             robot.PositionY = positionY;
-            robot.CurrentDirection = directionType;
+            robot.CurrentDirection = cuurrentDirection;
 
             //Act
             var result = robot.Move();

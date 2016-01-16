@@ -65,16 +65,16 @@ namespace ToyRobot.Service
                 switch (CurrentDirection)
                 {
                     case DirectionTypeEnum.NORTH:
-                        PositionX++;
-                        break;
-                    case DirectionTypeEnum.EAST:
                         PositionY++;
                         break;
+                    case DirectionTypeEnum.EAST:
+                        PositionX++;
+                        break;
                     case DirectionTypeEnum.SOUTH:
-                        PositionX--;
+                        PositionY--;
                         break;
                     case DirectionTypeEnum.WEST:
-                        PositionY--;
+                        PositionX--;
                         break;
                 }
                 return true;
@@ -138,16 +138,16 @@ namespace ToyRobot.Service
             switch (movingDirection)
             {
                 case DirectionTypeEnum.NORTH:
-                    if (PositionX == 5) return false;
-                    break;
-                case DirectionTypeEnum.EAST:
                     if (PositionY == 5) return false;
                     break;
+                case DirectionTypeEnum.EAST:
+                    if (PositionX == 5) return false;
+                    break;
                 case DirectionTypeEnum.SOUTH:
-                    if (PositionX == 0) return false;
+                    if (PositionY == 0) return false;
                     break;
                 case DirectionTypeEnum.WEST:
-                    if (PositionY == 0) return false;
+                    if (PositionX == 0) return false;
                     break;
             }
 

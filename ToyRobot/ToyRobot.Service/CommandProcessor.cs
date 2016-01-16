@@ -14,7 +14,6 @@ namespace ToyRobot
 
         #region Private Properties
         private const string INVALID_COMMAND = "Invalid Command.";
-
         private IRobot robot { get; set; }
 
         #endregion
@@ -99,7 +98,7 @@ namespace ToyRobot
         {
             if (commandResult)
             {
-                return robot.Report();
+                return "";
             }
             else
             {
@@ -113,14 +112,22 @@ namespace ToyRobot
         /// <returns></returns>
         private bool ValidFirstCommand(string commandString)
         {
-            if (robot.CurrentDirection == 0 && (CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
+            if (Enum.IsDefined(typeof(CommandTypeEnum), commandString))
             {
-                robot.StatusMessage = INVALID_COMMAND;
-                return false;
+                if (robot.CurrentDirection == 0 && (CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandString, true) != CommandTypeEnum.PLACE)
+                {
+                    robot.StatusMessage = INVALID_COMMAND;
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
-                return true;
+                robot.StatusMessage = INVALID_COMMAND;
+                return false;
             }
         }
 

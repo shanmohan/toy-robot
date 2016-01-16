@@ -3,6 +3,9 @@ using ToyRobot.Service;
 
 namespace ToyRobot.Console
 {
+    /// <summary>
+    /// Toy Robot simulation client controller
+    /// </summary>
     class Program
     {
         private const string WELCOME_MESSAGE = "Welcome to the Toy Robot World!!";
@@ -17,7 +20,10 @@ namespace ToyRobot.Console
 
             while (true)
             {
-                System.Console.WriteLine(commandProcessor.Process(System.Console.ReadLine()));
+                string output = commandProcessor.Process(System.Console.ReadLine());
+                if (output != ""){
+                    System.Console.WriteLine(output);
+                }
             }
         }
     }
