@@ -77,7 +77,7 @@ namespace ToyRobot.Service
 
         public string Report()
         {
-            throw new NotImplementedException();
+            return "Output: " + PositionX + "," + PositionY + "," + CurrentDirection.ToString();
         }
 
         public bool Right()

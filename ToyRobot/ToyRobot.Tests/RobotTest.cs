@@ -111,10 +111,22 @@ namespace ToyRobot.Tests
             Assert.That(robot.CurrentDirection, Is.EqualTo(newDirection));
         }
 
-        [Test]
-        public void ReportTest()
+        [TestCase(0, 0, DirectionTypeEnum.SOUTH, "Output: 0,0,SOUTH")]
+        [TestCase(0, 5, DirectionTypeEnum.EAST, "Output: 0,5,EAST")]
+        [TestCase(5, 0, DirectionTypeEnum.WEST, "Output: 5,0,WEST")]
+        [TestCase(5, 5, DirectionTypeEnum.NORTH, "Output: 5,5,NORTH")]
+        public void ReportTest(int postionX, int positionY, DirectionTypeEnum directionType, string output)
         {
-            Assert.Fail();
+            //Arrange
+            robot.PositionX = postionX;
+            robot.PositionY = positionY;
+            robot.CurrentDirection = directionType;
+
+            //Act
+            var result = robot.Report();
+
+            //Assert
+            Assert.That(result, Is.EqualTo(output));
         }
     }
 }
